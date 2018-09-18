@@ -2,6 +2,7 @@ package com.jinhui.shopcartdemo.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,8 +65,7 @@ public class ShoppingcaCartAdapter extends RecyclerView.Adapter<ShoppingcaCartAd
         String goods_points = mDatas.get(position).getGoods_points();//积分
 
 
-        if (!StringUtils
-                .isEmpty(goods_name)) {
+        if (!StringUtils.isEmpty(goods_name)) {
             holder.tvShopCartClothName.setText(goods_name);
         }
 
@@ -122,7 +122,6 @@ public class ShoppingcaCartAdapter extends RecyclerView.Adapter<ShoppingcaCartAd
         holder.ivShopCartClothDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showDialog(v, position);
             }
         });
@@ -130,7 +129,8 @@ public class ShoppingcaCartAdapter extends RecyclerView.Adapter<ShoppingcaCartAd
         holder.ivShopCartClothSel.setOnCheckedChangeListener(null);
 
         final ShoppingBean.DataBean.ListBean cartBean = mDatas.get(position);
-        //读取实体内存储的选中状态
+        // 读取实体内存储的选中状态
+        Log.e("内层布局数据刷新", cartBean.isSelect() + "");
         holder.ivShopCartClothSel.setChecked(cartBean.isSelect());
 
         holder.ivShopCartClothSel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -146,10 +146,10 @@ public class ShoppingcaCartAdapter extends RecyclerView.Adapter<ShoppingcaCartAd
                     }
                 }
                 if (!noSelect) {
-                    bean.setSelect(!noSelect);
+                    bean.setSelect(true);
                     shoppingCartAdapter.notifyDataSetChanged();
                 } else {
-                    bean.setSelect(!noSelect);
+                    bean.setSelect(false);
                     shoppingCartAdapter.notifyDataSetChanged();
                 }
                 EventBus.getDefault().post(new UpdataButton(shoppingCartAdapter.getAllPrice()));
